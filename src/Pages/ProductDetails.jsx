@@ -5,14 +5,31 @@ import useProducts from "../hooks/useProducts";
 const ProductDetails = () => {
   // const params=useParams()
   const { id } = useParams();
-  const { products, loading, error } = useProducts();
+  const { products, loading } = useProducts();
 
   const product = products.find((p) => String(p.id) === id);
 
   if (loading) return <p>Loading...</p>;
 
-  const { name, image, category, price,description } = product;
+  const { name, image, category, price, description } = product || {};
 
+  //fallack dile error dibe na ejonno || {}
+  // ===========================Local Storage===================
+  const handleAddToWishList = () => {
+    const existingList = JSON.parse(localStorage.getItem("wishlist"));
+    let updatedList = [];
+    if (existingList) {
+      const isDuplicate = existingList.some((p) => p.id === product.id);
+      if (isDuplicate) {
+        return alert("Duplicated Data Found");
+      }
+      updatedList = [...existingList, product];
+    } else {
+      updatedList.push(product);
+    }
+    localStorage.setItem("wishlist", JSON.stringify(updatedList));
+  };
+  // =======================================================================
   return (
     <div className="card bg-base-100 border  ">
       <figure className="h-84 overflow-hidden">
@@ -20,13 +37,13 @@ const ProductDetails = () => {
       </figure>
       <div className="card-body">
         <h2 className="card-title">{name}</h2>
-        <p>
-          {description}
-        </p>
+        <p>{description}</p>
         <p>Price: ${price}</p>
         <p>Category: {category}</p>
         <div className="card-actions justify-end">
-          <button className="btn btn-outline">Add to WishList</button>
+          <button onClick={handleAddToWishList} className="btn btn-outline">
+            Add to WishList
+          </button>
         </div>
       </div>
     </div>
