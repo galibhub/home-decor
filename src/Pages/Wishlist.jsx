@@ -27,6 +27,20 @@ const Wishlist = () => {
     }
   })()
 
+
+
+//   ==================remove==================
+
+const handleRemove=id=>{
+const existingList = JSON.parse(localStorage.getItem("wishlist"));
+ let updatedList =existingList.filter(p=>p.id!==id)
+   //for ui instant update when remmove
+  setWishlist(updatedList);
+    localStorage.setItem("wishlist", JSON.stringify(updatedList));
+  };
+
+  
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center py-5">
@@ -69,7 +83,7 @@ const Wishlist = () => {
             </div>
             <div className="pr-4 flex items-center gap-3">
               <div className="font-semibold">${p.price}</div>
-              <button className="btn btn-outline">Remove</button>
+              <button onClick={()=>handleRemove(p.id)} className="btn btn-outline">Remove</button>
             </div>
           </div>
         ))}
