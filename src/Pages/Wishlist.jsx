@@ -13,7 +13,7 @@ const Wishlist = () => {
   }, []);
 
 // ======================sorting================
-  const  sortedItem=()=>{
+  const  sortedItem=(()=>{
     if(sortOrder==="price-asc"){
         return [...wishlist].sort((a,b)=>a.price-b.price)
     }
@@ -25,7 +25,7 @@ const Wishlist = () => {
     {
         return wishlist;
     }
-  }
+  })()
 
   return (
     <div className="space-y-6">
@@ -54,7 +54,7 @@ const Wishlist = () => {
 
       <div className="space-y-3">
            {
-           sortedItem().map((p) => (
+           sortedItem.map((p) => (
           <div key={p.id} className="card card-side bg-base-100 shadow-sm">
             <figure>
               <img
